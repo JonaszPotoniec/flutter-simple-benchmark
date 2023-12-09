@@ -134,6 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () async {
                 setState(() {
                   _buttonState = ButtonState.loading;
+                  _benchmarkResults = [];
                 });
 
                 int result;

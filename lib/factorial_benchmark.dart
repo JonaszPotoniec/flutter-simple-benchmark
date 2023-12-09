@@ -1,6 +1,5 @@
 Future<int> factorialBenchmark() async {
-  // Number of tasks to run concurrently
-  int numberOfTasks = 4;
+  int numberOfTasks = 1000;
 
   // Measure the time taken to run the concurrent tasks
   Stopwatch stopwatch = Stopwatch()..start();
@@ -19,7 +18,9 @@ Future<List<int>> runConcurrentTasks(int numberOfTasks) async {
   List<Future<int>> futures = [];
 
   for (int i = 0; i < numberOfTasks; i++) {
-    futures.add(computeTask(i));
+    await Future.delayed(const Duration(milliseconds: 1), () {
+      futures.add(computeTask(i));
+    });
   }
 
   return await Future.wait(futures);
@@ -29,8 +30,8 @@ Future<int> computeTask(int taskId) async {
   int result = 0;
 
   // Simulate a CPU-bound task (calculating factorial)
-  for (int j = 0; j < 100000; j++) {
-    result = calculateFactorial(taskId + j);
+  for (int j = 0; j < 1000; j++) {
+    result = calculateFactorial(taskId * j);
   }
 
   return result;
