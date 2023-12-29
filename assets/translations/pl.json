@@ -1,0 +1,14 @@
+{
+  "appMadeBy": "Aplikacja wykonał Jonasz Potoniec",
+  "startBenchmark": "Rozpocznij test wydajności",
+  "performingBenchmark": "Wykonywanie testu",
+  "fail": "Niepowodzenie",
+  "success": "Sukces",
+  "factorial": "Silnia",
+  "memorySpeed": "Prędkość pamięci",
+  "fileSaveLoad": "Zapis/Odczyt pliku",
+  "matrixMultiplication": "Mnożenie macierzy",
+  "databaseOperations": "Operacje na bazie danych",
+  "benchmarkName": "Nazwa testu",
+  "result": "Wynik"
+}

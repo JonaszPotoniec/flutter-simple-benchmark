@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_benchmark/localized_benchmark_names.dart';
 import 'package:flutter_benchmark/database_benchmark.dart';
 import 'package:flutter_benchmark/factorial_benchmark.dart';
 import 'package:flutter_benchmark/matrix_multiplication_benchmark.dart';
@@ -6,8 +8,17 @@ import 'package:flutter_benchmark/memory_speed_benchmark.dart';
 import 'package:flutter_benchmark/save_load_benchmark.dart';
 import 'package:progress_state_button/progress_button.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
+
+  runApp(
+    EasyLocalization(
+        supportedLocales: const [Locale('en'), Locale('pl')],
+        path: 'assets/translations',
+        fallbackLocale: const Locale('en'),
+        child: const MyApp()),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -37,6 +48,9 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
       home: const MyHomePage(title: 'Simple Flutter Benchmark'),
     );
   }
@@ -80,7 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text(tr('appMadeBy')),
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
@@ -101,27 +115,37 @@ class _MyHomePageState extends State<MyHomePage> {
           // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            DropdownButton(
+              onChanged: (v) => setState(() {
+                context.setLocale(Locale(v as String));
+              }),
+              value: context.locale.languageCode,
+              items: const [
+                DropdownMenuItem(value: 'en', child: Text('English')),
+                DropdownMenuItem(value: 'pl', child: Text('Polski')),
+              ],
+            ),
             ProgressButton(
               padding: const EdgeInsets.all(8.0),
-              stateWidgets: const {
+              stateWidgets: {
                 ButtonState.idle: Text(
-                  "Start benchmark",
-                  style: TextStyle(
+                  tr('startBenchmark'),
+                  style: const TextStyle(
                       color: Colors.white, fontWeight: FontWeight.w500),
                 ),
                 ButtonState.loading: Text(
-                  "Performing benchmark",
-                  style: TextStyle(
+                  tr('performingBenchmark'),
+                  style: const TextStyle(
                       color: Colors.white, fontWeight: FontWeight.w500),
                 ),
                 ButtonState.fail: Text(
-                  "Fail",
-                  style: TextStyle(
+                  tr('fail'),
+                  style: const TextStyle(
                       color: Colors.white, fontWeight: FontWeight.w500),
                 ),
                 ButtonState.success: Text(
-                  "Success",
-                  style: TextStyle(
+                  tr('success'),
+                  style: const TextStyle(
                       color: Colors.white, fontWeight: FontWeight.w500),
                 )
               },
@@ -155,7 +179,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     () async {
                   result = await memorySpeedBenchmark();
                   setState(() {
-                    _benchmarkResults.add({'memory speed': result});
+                    _benchmarkResults.add({'memorySpeed': result});
                   });
                 });
 
@@ -164,7 +188,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     () async {
                   result = await saveLoadBenchmark();
                   setState(() {
-                    _benchmarkResults.add({'file save/load speed': result});
+                    _benchmarkResults.add({'fileSaveLoad': result});
                   });
                 });
 
@@ -173,7 +197,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     () async {
                   result = await matrixMultiplicationBenchmark();
                   setState(() {
-                    _benchmarkResults.add({'matrix multiplication': result});
+                    _benchmarkResults.add({'matrixMultiplication': result});
                   });
                 });
 
@@ -182,7 +206,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     () async {
                   result = await databaseQueryBenchmark();
                   setState(() {
-                    _benchmarkResults.add({'database operations': result});
+                    _benchmarkResults.add({'databaseOperations': result});
                   });
                 });
 
@@ -193,16 +217,16 @@ class _MyHomePageState extends State<MyHomePage> {
               state: _buttonState,
             ),
             DataTable(
-              columns: const [
+              columns: [
                 DataColumn(
                   label: Text(
-                    'Benchmark name',
+                    tr('benchmarkName'),
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
                 DataColumn(
                   label: Text(
-                    'Result',
+                    tr('result'),
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -214,7 +238,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   cells: [
                     DataCell(
                       Text(
-                        benchmark,
+                        getLocatizedBenchmarkName(benchmark),
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                     ),

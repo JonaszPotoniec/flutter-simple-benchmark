@@ -1,0 +1,14 @@
+{
+    "appMadeBy": "App made by Jonasz Potoniec",
+    "startBenchmark": "Start benchmark",
+    "performingBenchmark": "Performing benchmark",
+    "fail": "Fail",
+    "success": "Success",   
+    "factorial": "Factorial",
+    "memorySpeed": "Memory speed",
+    "fileSaveLoad": "File save/load",
+    "matrixMultiplication": "Matrix multiplication",
+    "databaseOperations": "Database operations",
+    "benchmarkName": "Benchmark name",
+    "result": "Result"
+}

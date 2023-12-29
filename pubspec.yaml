@@ -40,6 +40,8 @@ dependencies:
   progress_state_button: "^1.0.4"
   sqflite: ^2.3.0
   path: ^1.8.3
+  intl: any
+  easy_localization: ^3.0.3
 
 dev_dependencies:
   flutter_test:
@@ -61,6 +63,8 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  assets:
+    - assets/translations/
 
   # To add assets to your application, add an assets section, like this:
   # assets:
